@@ -31,8 +31,12 @@ public class TimeServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf resp = Unpooled.copiedBuffer(time.getBytes());
         ctx.write(resp);
 
+        // 触发下一个ChannelInboundHandler事件的channelRegister的事件
+        ctx.pipeline().fireChannelRegistered();
+
         // 将缓冲数组中的数组发送到SocketChannel
         ctx.flush();
+
     }
 
     @Override
@@ -40,8 +44,5 @@ public class TimeServerHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
-
-
-
 
 }
