@@ -4,6 +4,7 @@ import com.shawnliang.netty.protostuff.model.SubscribeReq;
 import com.shawnliang.netty.protostuff.model.SubscribeResp;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +37,18 @@ public class SubscribeClientHandler extends SimpleChannelInboundHandler<Subscrib
                 .userName("李四")
                 .addressList(addressList)
                 .build();
-
         ctx.write(req);
         ctx.write(req2);
-
         ctx.flush();
+
+//        ctx.writeAndFlush(req);
+//        ctx.writeAndFlush(req2);
+//
+//        ctx.flush();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SubscribeResp msg) throws Exception {
-        System.out.println("客户端收到了响应体 " + msg.toString());
+        System.out.println(LocalDateTime.now() + "客户端收到了响应体 " + msg.toString());
     }
 }

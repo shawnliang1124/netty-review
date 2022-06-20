@@ -42,7 +42,7 @@ public class SubscribeServer {
         try {
             b.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 100)
+                    .option(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
 
@@ -52,7 +52,7 @@ public class SubscribeServer {
                             ByteBuf delimiter = Unpooled.copiedBuffer(Constant.SPLIT_SYMBOL.getBytes());
 
                             // 分隔符处理器，防止TCP粘包拆包
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
+                            pipeline.addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, delimiter));
 
                             // 消息的序列化反序列化
                             pipeline.addLast(new ServerMsgDecoder());

@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 /**
  * Description :   .
@@ -19,13 +20,14 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     public TimeClientHandler() {
         byte[] req = "QUERY TIME ORDER".getBytes();
         firstMsg = Unpooled.buffer(req.length);
-        firstMsg.writeBytes(req);
+
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ctx.writeAndFlush(firstMsg);
-        System.out.println("消息发送完毕。");
+        System.out.println(LocalDateTime.now() + "finished");
+        ctx.writeAndFlush(firstMsg);
     }
 
     @Override

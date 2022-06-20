@@ -7,6 +7,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description :   .
@@ -54,6 +56,15 @@ public class TimeServer {
         protected void initChannel(SocketChannel ch) throws Exception {
             ch.pipeline().addLast(new TimeServerHandler());
             ch.pipeline().addLast(new TimeServerRegisterHandler());
+
+            ScheduledFuture<?> future = ch.eventLoop().scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    // do sth
+                }
+            }, 60, 60, TimeUnit.SECONDS);
+
+            future.cancel(false);
         }
     }
 
@@ -62,7 +73,7 @@ public class TimeServer {
      * @param args
      */
     public static void main(String[] args) throws InterruptedException {
-        int port = 8080;
+        int port = 9000;
 
         new TimeServer().bind(port);
     }
